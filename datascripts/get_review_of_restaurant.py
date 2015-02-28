@@ -3,7 +3,7 @@ import pymysql
 
 finalResult = {}
 
-def QueryDB(business_id):
+def GetReviewsByID(business_id):
     conn = pymysql.Connect(host='localhost', user='root', passwd='',charset='utf8', db='yelpdb')
     cursor = conn.cursor()
 
@@ -16,11 +16,25 @@ def QueryDB(business_id):
 
     conn.close()
 
+def GetBusinessID():
+    conn = pymysql.Connect(host='localhost', user='root', passwd='',charset='utf8', db='yelpdb')
+    cursor = conn.cursor()
+
+    cursor.execute( "SELECT business_id FROM business limit 100" )
+    conn.commit()
+
+    ids = cursor.fetchall()
+
+    conn.close()
+
+    return ids
+
 if __name__ == '__main__':
 
-    business_ids = ['--jFTZmywe7StuZ2hEjxyA','-0bl9EllYlei__4dl1W00Q']
+    business_ids = GetBusinessID()
+
     for business_id in business_ids:
-        QueryDB(business_id)
+        GetReviewsByID(business_id[0])
 
     f = open('results.txt','w')
     f.write(json.dumps(finalResult))
