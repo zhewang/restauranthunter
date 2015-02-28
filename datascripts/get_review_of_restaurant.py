@@ -36,7 +36,7 @@ if __name__ == '__main__':
     for business_id in business_ids:
         GetReviewsByID(business_id[0])
 
-    f = open('results.txt','w')
-    f.write(json.dumps(finalResult))
+    f = open('results.json','w')
+    f.write(json.dumps(finalResult, sort_keys=True, indent=4))
     f.close()
     
