@@ -34,10 +34,11 @@
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // add a marker in the given location, attach some popup content to it and open the popup
+        // add a marker in the given location
+        clickfunction = function onClick(e) {alert(this.getLatLng());}
+
         for (var i = 0; i < data.length; i ++) {
-             L.marker([data[i][1], data[i][2]]).addTo(map)
-                .bindPopup(data[i][0])
+             L.marker([data[i][1], data[i][2]]).on('click', clickfunction).addTo(map);
         }
        
 
