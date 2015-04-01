@@ -7647,7 +7647,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		        this._map.containerPointToLatLng(this._point));
 
 		this._map
-			.fitBounds(bounds)
+			//.fitBounds(bounds)
 			.fire('boxzoomend', {boxZoomBounds: bounds});
 	},
 
