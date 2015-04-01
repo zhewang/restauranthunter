@@ -5,7 +5,7 @@ def GetAZResturants():
     conn = pymysql.Connect(host='localhost', user='root', passwd='',charset='utf8', db='yelpdb')
     cursor = conn.cursor()
 
-    cursor.execute( "SELECT name, latitude, longitude FROM business where state='AZ' limit 100" )
+    cursor.execute( "SELECT business_id, name, latitude, longitude FROM business where state='AZ' limit 100" )
     conn.commit()
 
     results = cursor.fetchall()
