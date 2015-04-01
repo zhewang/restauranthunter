@@ -38,23 +38,38 @@
         var markers = []
         for (var i = 0; i < data.length; i ++) {
              var marker = L.marker([data[i][2], data[i][3]]).on('click', clickfunction);
-             marker._leaflet_id = data[i][0]
+             marker._leaflet_id = data[i][0];
              marker.addTo(map);
              markers[markers.length] = marker
         }
 
+        var redMarker = L.icon({
+            iconUrl: './leaflet-0.8-dev/images/marker-red.png',
+            shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
+
+            iconSize:    [25, 41],
+            iconAnchor:  [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize:  [41, 41]
+        });
+
         map.on("boxzoomend", function(e) {
+            SelectedMarkers = []
             for (var i = 0; i < markers.length; i++) {
                 if (e.boxZoomBounds.contains(markers[i].getLatLng())) {
-                    console.log(markers[i]._leaflet_id);
+                    map.removeLayer(markers[i])
+
+                    var marker = L.marker(markers[i].getLatLng(), {icon: redMarker});
+                    marker._leaflet_id = markers[i]._leaflet_id;
+                    marker.addTo(map);
+                    SelectedMarkers[SelectedMarkers.length] = marker
                 }
             }
-        });
-       
 
-    });       
 
-    
+        });       
+
+    });           
 </script>
 </div>
 </body>
