@@ -16,17 +16,15 @@
 <div id="map">
 <script type="text/javascript">
 
-    var data;
+    var data; //[business_id, name, lon, lat]
 
     d3.json("./az100.json", function(error, json) {
         if (error) return console.warn(error);
-        data = json;
-
-        console.log(data[0])
+        data = json; 
           
         // create a map in the "map" div, set the view to a given place and zoom
-        lon = data[0][1]
-        lat = data[0][2]
+        lon = data[0][2]
+        lat = data[0][3]
         var map = L.map('map').setView([lon, lat], 10);
 
         // add an OpenStreetMap tile layer
@@ -35,10 +33,12 @@
         }).addTo(map);
 
         // add a marker in the given location
-        clickfunction = function onClick(e) {alert(this.getLatLng());}
+        clickfunction = function onClick(e) {alert(this._leaflet_id);}
 
         for (var i = 0; i < data.length; i ++) {
-             L.marker([data[i][1], data[i][2]]).on('click', clickfunction).addTo(map);
+             var marker = L.marker([data[i][2], data[i][3]]).on('click', clickfunction);
+             marker._leaflet_id = data[i][0]
+             marker.addTo(map);
         }
        
 
