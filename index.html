@@ -13,7 +13,12 @@
      </style>
 </head>
 <body>
-<div id="map">
+<div id="map"></div>
+
+<div>
+    <button id="reset">Reset</button>
+</div>
+
 <script type="text/javascript">
 
     var data; //[business_id, name, lon, lat]
@@ -53,24 +58,50 @@
             shadowSize:  [41, 41]
         });
 
+        var SelectedMarkerIndex = new Array();
+        var AddedRedMarkers = new Array();
         map.on("boxzoomend", function(e) {
-            SelectedMarkers = []
             for (var i = 0; i < markers.length; i++) {
-                if (e.boxZoomBounds.contains(markers[i].getLatLng())) {
-                    map.removeLayer(markers[i])
 
-                    var marker = L.marker(markers[i].getLatLng(), {icon: redMarker});
-                    marker._leaflet_id = markers[i]._leaflet_id;
-                    marker.addTo(map);
-                    SelectedMarkers[SelectedMarkers.length] = marker
+                if (e.boxZoomBounds.contains(markers[i].getLatLng())) {
+
+                    // already selected or not
+                    var flag = 0;
+                    for (var j = 0; j < SelectedMarkerIndex.length; j ++) {
+                        if (SelectedMarkerIndex[j] == i) {
+                            flag = 1
+                        }
+                    }
+
+                    if (flag == 0) {
+                        map.removeLayer(markers[i]); 
+                        SelectedMarkerIndex.push(i);                   
+
+                        var marker = L.marker(markers[i].getLatLng(), {icon: redMarker});
+                        marker._leaflet_id = markers[i]._leaflet_id;
+                        marker.addTo(map);
+                        AddedRedMarkers.push(marker);
+                    }
+                    
                 }
             }
 
+        });
 
-        });       
+        d3.select("#reset")
+            .on("click", function() {
+                for (var i = 0; i < AddedRedMarkers.length; i ++) {
+                    map.removeLayer(AddedRedMarkers[i])
+                    markers[SelectedMarkerIndex[i]].addTo(map);
+                }
+
+                AddedRedMarkers = [];
+                SelectedMarkerIndex = [];
+                
+            }); 
 
     });           
 </script>
-</div>
+
 </body>
 </html>
