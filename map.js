@@ -1,12 +1,12 @@
-var data; //[business_id, name, lon, lat]
+var restaurant_data; //[business_id, name, lon, lat]
 
 d3.json("./az100.json", function(error, json) {
     if (error) return console.warn(error);
-    data = json; 
+    restaurant_data = json; 
       
     // create a map in the "map" div, set the view to a given place and zoom
-    lon = data[0][2]
-    lat = data[0][3]
+    lon = restaurant_data[0][2]
+    lat = restaurant_data[0][3]
     var map = L.map('map').setView([lon, lat], 10);
 
     // add an OpenStreetMap tile layer
@@ -20,9 +20,9 @@ d3.json("./az100.json", function(error, json) {
     }
 
     var markers = []
-    for (var i = 0; i < data.length; i ++) {
-         var marker = L.marker([data[i][2], data[i][3]]).on('click', onClick);
-         marker._leaflet_id = data[i][0];
+    for (var i = 0; i < restaurant_data.length; i ++) {
+         var marker = L.marker([restaurant_data[i][2], restaurant_data[i][3]]).on('click', onClick);
+         marker._leaflet_id = restaurant_data[i][0];
          marker.addTo(map);
          markers[markers.length] = marker
     }
@@ -43,7 +43,7 @@ d3.json("./az100.json", function(error, json) {
     var AddedRedMarkers = new Array();
     map.on("boxzoomend", function(e) {
         for (var i = 0; i < markers.length; i++) {
-            
+
             // in the selection area and not been selected
             if (e.boxZoomBounds.contains(markers[i].getLatLng()) && !SelectedMarkerIndex.hasOwnProperty(i)) {
                 map.removeLayer(markers[i]); 
@@ -53,7 +53,7 @@ d3.json("./az100.json", function(error, json) {
                 marker._leaflet_id = markers[i]._leaflet_id;
                 marker.addTo(map);
                 AddedRedMarkers.push(marker);
-            }  
+            }
         }
 
     });

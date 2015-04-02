@@ -11,8 +11,17 @@ function plotByID (business_id) {
         importRating(restaurantID);
 
         plotRating(revi, revit);
+
+        // ToDo use a key value array for restaurant data, so that
+        //      we can get name like restaurant_data["id"]
+        function getNamebyID(id) {
+            for (var i = 0; i < restaurant_data.length; i ++)
+                if (restaurant_data[i][0] == business_id) {
+                    return restaurant_data[i][1]
+                };
+        }
         
-        d3.select("#rID").text(restaurantID);
+        d3.select("#rID").text(getNamebyID(business_id));
     } else {
         alert("Don't have reviews for this restaurant")
     }
