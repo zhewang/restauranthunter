@@ -38,7 +38,9 @@
         }).addTo(map);
 
         // add a marker in the given location
-        clickfunction = function onClick(e) {alert(this._leaflet_id);}
+        clickfunction = function onClick(e) {
+            alert(this._leaflet_id);
+        }
 
         var markers = []
         for (var i = 0; i < data.length; i ++) {
@@ -77,7 +79,7 @@
                         map.removeLayer(markers[i]); 
                         SelectedMarkerIndex.push(i);                   
 
-                        var marker = L.marker(markers[i].getLatLng(), {icon: redMarker});
+                        var marker = L.marker(markers[i].getLatLng(), {icon: redMarker}).on('click', clickfunction);
                         marker._leaflet_id = markers[i]._leaflet_id;
                         marker.addTo(map);
                         AddedRedMarkers.push(marker);
