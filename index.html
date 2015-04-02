@@ -5,13 +5,18 @@
      <link rel="stylesheet" href="./leaflet-0.8-dev/leaflet.css" />
      <script src="./leaflet-0.8-dev/leaflet-src.js"></script>
      <script src="./d3.min.js" charset="utf-8"></script>
+
+     <script src="./map.js"></script>
+     <script src="yelp-resReview3.js"></script>
+
      <style>
-     #map { 
-        height: 400px; 
-        width: 600px;
-    }
+        #map { 
+            height: 400px; 
+            width: 600px;
+        }
      </style>
 </head>
+
 <body>
 <div id="map"></div>
 
@@ -19,7 +24,11 @@
     <button id="reset">Reset</button>
 </div>
 
-<script src="./map.js"></script>
+<svg id = "svg1" width="800" height="100"></svg>
+        
+<div>
+    <button id="restID">Another Restaurant</button> (current restaurant: <span id="rID"></span>)
+</div>
 
 </body>
 </html>

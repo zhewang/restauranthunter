@@ -14,19 +14,20 @@ d3.json("./az100.json", function(error, json) {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // add a marker in the given location
-    clickfunction = function onClick(e) {
-        alert(this._leaflet_id);
+    // add markers
+    function onClick(e) {
+        plotByID(this._leaflet_id);
     }
 
     var markers = []
     for (var i = 0; i < data.length; i ++) {
-         var marker = L.marker([data[i][2], data[i][3]]).on('click', clickfunction);
+         var marker = L.marker([data[i][2], data[i][3]]).on('click', onClick);
          marker._leaflet_id = data[i][0];
          marker.addTo(map);
          markers[markers.length] = marker
     }
 
+    // custom marker for selected restaurant
     var redMarker = L.icon({
         iconUrl: './leaflet-0.8-dev/images/marker-red.png',
         shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
@@ -37,36 +38,27 @@ d3.json("./az100.json", function(error, json) {
         shadowSize:  [41, 41]
     });
 
+    // area selection
     var SelectedMarkerIndex = new Array();
     var AddedRedMarkers = new Array();
     map.on("boxzoomend", function(e) {
         for (var i = 0; i < markers.length; i++) {
+            
+            // in the selection area and not been selected
+            if (e.boxZoomBounds.contains(markers[i].getLatLng()) && !SelectedMarkerIndex.hasOwnProperty(i)) {
+                map.removeLayer(markers[i]); 
+                SelectedMarkerIndex.push(i);                   
 
-            if (e.boxZoomBounds.contains(markers[i].getLatLng())) {
-
-                // already selected or not
-                var flag = 0;
-                for (var j = 0; j < SelectedMarkerIndex.length; j ++) {
-                    if (SelectedMarkerIndex[j] == i) {
-                        flag = 1
-                    }
-                }
-
-                if (flag == 0) {
-                    map.removeLayer(markers[i]); 
-                    SelectedMarkerIndex.push(i);                   
-
-                    var marker = L.marker(markers[i].getLatLng(), {icon: redMarker}).on('click', clickfunction);
-                    marker._leaflet_id = markers[i]._leaflet_id;
-                    marker.addTo(map);
-                    AddedRedMarkers.push(marker);
-                }
-                
-            }
+                var marker = L.marker(markers[i].getLatLng(), {icon: redMarker}).on('click', onClick);
+                marker._leaflet_id = markers[i]._leaflet_id;
+                marker.addTo(map);
+                AddedRedMarkers.push(marker);
+            }  
         }
 
     });
 
+    // reset selection
     d3.select("#reset")
         .on("click", function() {
             for (var i = 0; i < AddedRedMarkers.length; i ++) {
