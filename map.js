@@ -16,7 +16,7 @@ d3.json("./az100.json", function(error, json) {
 
     // add markers
     function onClick(e) {
-        plotByID(this._leaflet_id);
+        plotByID([this._leaflet_id]);
     }
 
     var markers = []
@@ -42,6 +42,7 @@ d3.json("./az100.json", function(error, json) {
     var SelectedMarkerIndex = new Array();
     var AddedRedMarkers = new Array();
     map.on("boxzoomend", function(e) {
+        selectedID = []
         for (var i = 0; i < markers.length; i++) {
 
             // in the selection area and not been selected
@@ -53,8 +54,11 @@ d3.json("./az100.json", function(error, json) {
                 marker._leaflet_id = markers[i]._leaflet_id;
                 marker.addTo(map);
                 AddedRedMarkers.push(marker);
+
+                selectedID.push(marker._leaflet_id)
             }
         }
+        plotByID(selectedID)
 
     });
 
