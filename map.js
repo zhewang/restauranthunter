@@ -1,5 +1,68 @@
 var restaurant_data; //[business_id, name, lon, lat]
 
+// custom marker for selected restaurant
+var starMarker1 = L.icon({
+    iconUrl: './leaflet-0.8-dev/images/marker-star1.png',
+    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
+
+    iconSize:    [25, 41],
+    iconAnchor:  [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize:  [41, 41]
+});
+
+var starMarker2 = L.icon({
+    iconUrl: './leaflet-0.8-dev/images/marker-star2.png',
+    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
+
+    iconSize:    [25, 41],
+    iconAnchor:  [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize:  [41, 41]
+});
+
+var starMarker3 = L.icon({
+    iconUrl: './leaflet-0.8-dev/images/marker-star3.png',
+    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
+
+    iconSize:    [25, 41],
+    iconAnchor:  [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize:  [41, 41]
+});
+
+var starMarker4 = L.icon({
+    iconUrl: './leaflet-0.8-dev/images/marker-star4.png',
+    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
+
+    iconSize:    [25, 41],
+    iconAnchor:  [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize:  [41, 41]
+});
+
+var starMarker5 = L.icon({
+    iconUrl: './leaflet-0.8-dev/images/marker-star5.png',
+    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
+
+    iconSize:    [25, 41],
+    iconAnchor:  [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize:  [41, 41]
+});
+
+function GetMarkerbyStar(star) {
+    var marker = L.Marker;
+    switch(Math.round(star)) {
+        case 1: marker = starMarker1; break;
+        case 2: marker = starMarker2; break;
+        case 3: marker = starMarker3; break;
+        case 4: marker = starMarker4; break;
+        case 5: marker = starMarker5; break;
+    }
+    return marker;
+};
+
 d3.json("./az100.json", function(error, json) {
     if (error) return console.warn(error);
     restaurant_data = json; 
@@ -21,22 +84,11 @@ d3.json("./az100.json", function(error, json) {
 
     var markers = []
     for (var i = 0; i < restaurant_data.length; i ++) {
-         var marker = L.marker([restaurant_data[i][2], restaurant_data[i][3]]).on('click', onClick);
+         var marker = L.marker([restaurant_data[i][2], restaurant_data[i][3]], {icon: GetMarkerbyStar(restaurant_data[i][4])} ).on('click', onClick);
          marker._leaflet_id = restaurant_data[i][0];
          marker.addTo(map);
          markers[markers.length] = marker
     }
-
-    // custom marker for selected restaurant
-    var redMarker = L.icon({
-        iconUrl: './leaflet-0.8-dev/images/marker-red.png',
-        shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
-
-        iconSize:    [25, 41],
-        iconAnchor:  [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize:  [41, 41]
-    });
 
     // area selection
     var SelectedMarkerIndex = new Array();
@@ -50,7 +102,7 @@ d3.json("./az100.json", function(error, json) {
                 map.removeLayer(markers[i]); 
                 SelectedMarkerIndex.push(i);                   
 
-                var marker = L.marker(markers[i].getLatLng(), {icon: redMarker}).on('click', onClick);
+                var marker = L.marker(markers[i].getLatLng()).on('click', onClick);
                 marker._leaflet_id = markers[i]._leaflet_id;
                 marker.addTo(map);
                 AddedRedMarkers.push(marker);
