@@ -65,8 +65,8 @@ function GetMarkerbyStar(star) {
 
 d3.json("./az100.json", function(error, json) {
     if (error) return console.warn(error);
-    restaurant_data = json; 
-      
+    restaurant_data = json;
+
     // create a map in the "map" div, set the view to a given place and zoom
     lon = restaurant_data[0][2]
     lat = restaurant_data[0][3]
@@ -98,9 +98,9 @@ d3.json("./az100.json", function(error, json) {
         for (var i = 0; i < markers.length; i++) {
 
             // in the selection area and not been selected
-            if (e.boxZoomBounds.contains(markers[i].getLatLng()) && !SelectedMarkerIndex.hasOwnProperty(i)) {
-                map.removeLayer(markers[i]); 
-                SelectedMarkerIndex.push(i);                   
+            if (! e.boxZoomBounds.contains(markers[i].getLatLng()) || SelectedMarkerIndex.hasOwnProperty(i)) {
+                map.removeLayer(markers[i]);
+                SelectedMarkerIndex.push(i);
 
                 var marker = L.marker(markers[i].getLatLng()).on('click', onClick);
                 marker._leaflet_id = markers[i]._leaflet_id;
@@ -124,7 +124,7 @@ d3.json("./az100.json", function(error, json) {
 
             AddedRedMarkers = [];
             SelectedMarkerIndex = [];
-            
-        }); 
 
-});  
+        });
+
+});
