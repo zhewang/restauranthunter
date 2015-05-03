@@ -94,9 +94,17 @@ d3.json("./az100.json", function(error, json) {
     var SelectedMarkerIndex = new Array();
     var AddedRedMarkers = new Array();
     map.on("boxzoomend", function(e) {
-        selectedID = []
-        for (var i = 0; i < markers.length; i++) {
+        // clear previous data
+        for (var i = 0; i < AddedRedMarkers.length; i ++) {
+            map.removeLayer(AddedRedMarkers[i])
+            markers[SelectedMarkerIndex[i]].addTo(map);
+        }
 
+        AddedRedMarkers = [];
+        SelectedMarkerIndex = [];
+        selectedID = []
+
+        for (var i = 0; i < markers.length; i++) {
             // in the selection area and not been selected
             if (! e.boxZoomBounds.contains(markers[i].getLatLng()) || SelectedMarkerIndex.hasOwnProperty(i)) {
                 map.removeLayer(markers[i]);
