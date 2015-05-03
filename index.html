@@ -11,18 +11,99 @@
 
      <style>
         #map { 
-            height: 400px; 
-            width: 600px;
+            height: 600px; 
+            width: 800px;
         }
+
+        .right{
+            overflow:hidden;
+            background:AntiqueWhite;
+        }
+        .left{
+            float:left;
+        }
+        .axises path{
+            fill: none;
+            stroke: black;
+            stroke-width: 1;
+        }
+        .axises line {
+            fill: black;
+            stroke: black;
+            stroke-width: 1;
+        }
+        .axises text {
+            font-family: sans-serif;
+            font-size: 14px;
+        }
+
+        .table2 {
+            background-color: Aqua;
+        }
+
+        table {
+            border-spacing: 10px;
+        }
+
+        th {
+            text-align: right;
+            font-family: Palatino Linotype;
+            font-size: 14px;
+            
+        }
+
+        td {
+            text-align: center;
+            font-family: Verdana;
+            font-size: 12px;
+            color: DarkBlue;
+        }
+
      </style>
 </head>
 
 <body>
-<div id="map"></div>
+<div class="left" id="map"></div>
+<div class="right">
+    <svg id="scatter" width="400" height="400"></svg>
+</div>
+
+<div class="table2" width="400" height="200">
+
+    <table class="table1" >
+        <tr>
+            <th>&nbsp;&nbsp;Name:&nbsp;&nbsp;</th>
+            <td id="name"></td> 
+        </tr>
+        <tr>
+            <th>&nbsp;&nbsp;Weighted Rating:&nbsp;&nbsp;</th>
+            <td id="weiRating"></td> 
+        </tr>
+        <tr>
+            <th>&nbsp;&nbsp;Average Rating:&nbsp;&nbsp;</th>
+            <td id="aveRating"></td> 
+        </tr>
+        <tr>
+            <th>&nbsp;&nbsp;# of Rating:&nbsp;&nbsp;</th>
+            <td id="numRating"></td> 
+        <tr>
+            <th>&nbsp;&nbsp;First Rating:&nbsp;&nbsp;</th>
+            <td id="firRating"></td> 
+        </tr>
+        <tr>
+            <th>&nbsp;&nbsp;Last Rating:&nbsp;&nbsp;</th>
+            <td id="lasRating"></td> 
+        </tr>
+        </tr>
+    </table>
+
+</div>
+
 
 <div>
     <button id="reset">Reset</button>
 </div>
+
 
 </body>
 </html>

@@ -77,6 +77,59 @@ d3.json("./az100.json", function(error, json) {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
+
+    // draw the scatter plot (first rating vs average rating) axises
+    xaxisRange = d3.scale.linear().domain([0, 5]).range([40,390]);
+    yaxisRange = d3.scale.linear().domain([0, 5]).range([370,20]);
+    var xAxis = d3.svg.axis().ticks(5).scale(xaxisRange);
+    var yAxis = d3.svg.axis().ticks(5).scale(yaxisRange);
+
+    d3.select("#scatter").append("line")
+        .attr("x1", 40)
+        .attr("y1", 370)
+        .attr("x2", 390)
+        .attr("y2", 20)
+        .attr("stroke", "blue")
+        .attr("stroke-width", 1);
+
+    yAxis.orient("left");
+    d3.select("#scatter") // or something else that selects the SVG element in your visualizations
+        .append("g") // create a group node
+        .attr("class", "axises")
+        .attr("transform", "translate(40, 0)")
+        .call(yAxis); // call the axis generator
+     d3.select("#scatter") // or something else that selects the SVG element in your visualizations
+        .append("g") // create a group node
+        .attr("class", "axises")
+        .attr("transform", "translate(0, 370)")
+        .call(xAxis); // call the axis generator
+
+    // Click on scatterplot
+    d3.select("#scatter")
+    .on("click", function()
+    {
+        var mouseC = d3.mouse(this);
+        for (var k=0; k<firstRat.length; k++){
+            if ((mouseC[0] + 5) > xaxisRange(firstRat[k]) && (mouseC[0] - 5) < xaxisRange(firstRat[k]))
+            {
+                if ((mouseC[1] + 5) > yaxisRange(ratMean[k]) && (mouseC[1] - 5) < yaxisRange(ratMean[k]))
+                {
+                    d3.select("body").select("#name").text(resName[k]);
+                    d3.select("body").select("#weiRating").text(firstRat[k]);
+                    d3.select("body").select("#aveRating").text(ratMean[k]);
+                    d3.select("body").select("#numRating").text(numR[k]);
+                    d3.select("body").select("#firRating").text(firstDate[k]);
+                    d3.select("body").select("#lasRating").text(lastDate[k]);
+                }
+            }
+
+
+        }
+
+
+    });
+
+
     // add markers
     function onClick(e) {
         plotByID([this._leaflet_id]);
@@ -102,9 +155,10 @@ d3.json("./az100.json", function(error, json) {
 
         AddedRedMarkers = [];
         SelectedMarkerIndex = [];
-        selectedID = []
 
+        selectedID = []
         for (var i = 0; i < markers.length; i++) {
+
             // in the selection area and not been selected
             if (! e.boxZoomBounds.contains(markers[i].getLatLng()) || SelectedMarkerIndex.hasOwnProperty(i)) {
                 map.removeLayer(markers[i]);
@@ -130,6 +184,16 @@ d3.json("./az100.json", function(error, json) {
                 map.removeLayer(AddedRedMarkers[i])
                 markers[SelectedMarkerIndex[i]].addTo(map);
             }
+
+            // clean all the plots and table entries
+            d3.select("body").selectAll(".svgclass").remove();
+            d3.select("#scatter").selectAll("circle").remove();
+            d3.select("body").select("#name").text("");
+            d3.select("body").select("#weiRating").text("");
+            d3.select("body").select("#aveRating").text("");
+            d3.select("body").select("#numRating").text("");
+            d3.select("body").select("#firRating").text("");
+            d3.select("body").select("#lasRating").text("");
 
             AddedRedMarkers = [];
             SelectedMarkerIndex = [];
