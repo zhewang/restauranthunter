@@ -106,7 +106,8 @@ d3.json("./az100.json", function(error, json) {
                 marker._leaflet_id = markers[i]._leaflet_id;
                 marker.addTo(map);
                 AddedRedMarkers.push(marker);
-
+            }
+            else {
                 selectedID.push(marker._leaflet_id)
             }
         }
