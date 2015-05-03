@@ -120,15 +120,15 @@ d3.json("./az100.json", function(error, json) {
                     d3.select("body").select("#numRating").text(numR[k]);
                     d3.select("body").select("#firRating").text(firstDate[k]);
                     d3.select("body").select("#lasRating").text(lastDate[k]);
+                    highlightInMap(resID[k]);
                 }
             }
-
-
         }
-
-
     });
 
+    function highlightInMap(resID) {
+        console.log(resID);
+    }
 
     // add markers
     function onClick(e) {

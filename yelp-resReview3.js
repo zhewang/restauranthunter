@@ -6,6 +6,7 @@ var ratMean;    // store avearge rating of selected restaurant
 var firstRat;   // store the first rating of selected restaurant
 var counter = 0;   //count how many restaurants of selected have been imported
 var resName;   // store the restaurant name of selected restaurant
+var resID;    // store the restaurant ID of selected restaurant
 var numR;      // store how many ratings of each restaurant
 var firstDate;   // store the date of first rating of each restaurant
 var lastDate;  // store the date of last rating of each restuarant
@@ -13,7 +14,7 @@ var lastDate;  // store the date of last rating of each restuarant
 // funtiont generate date object from database entry
 var formatDate = d3.time.format("%Y-%m-%d");
 
-function plotByID (business_id) 
+function plotByID (business_id)
 {
     // create new array to store mean rating for all the restaurant
     ratMean = new Array(business_id.length);
@@ -22,6 +23,7 @@ function plotByID (business_id)
     numR = new Array(business_id.length);
     firstDate = new Array(business_id.length);
     lastDate = new Array(business_id.length);
+    resID = business_id;
     counter = 0;
 
     d3.select("body").selectAll(".svgclass").remove();  // clean all the drawings
@@ -34,7 +36,7 @@ function plotByID (business_id)
             // create a svg for the new restaurant
             d3.select("body").append("svg").attr("width", 800).attr("height", 200)
                 .attr("id", svgname).attr("class", "svgclass");
-            
+
             // ToDo use a key value array for restaurant data, so that
             //      we can get name like restaurant_data["id"]
             function getNamebyID(id) {
@@ -58,7 +60,7 @@ function plotByID (business_id)
             d3.select("body").select("#numRating").text(numR[0]);
             d3.select("body").select("#firRating").text(firstDate[0]);
             d3.select("body").select("#lasRating").text(lastDate[0]);
-           
+
         } else {
             alert("Don't have reviews for this restaurant")
         }
@@ -67,7 +69,7 @@ function plotByID (business_id)
     // draw first review (y) vs avearage review (x)
     xaxisRange = d3.scale.linear().domain([0, 5]).range([40,390]);
     yaxisRange = d3.scale.linear().domain([0, 5]).range([370,20]);
-    
+
     d3.select("#scatter").selectAll("circle").remove();
     d3.select("#scatter")//.append("svg").attr("width", 400).attr("height", 400).attr("id", "scatter")
         .selectAll("circle")
@@ -92,7 +94,7 @@ function importRating (rid)
             revi[k] = rating[rid][k][0];
             revit[k] = formatDate.parse(rating[rid][k][1]);
             //console.log(revi[k], revit[k]);
-        }  
+        }
 
     firstDate[counter] = rating[rid][0][1];
     lastDate[counter] = rating[rid][numRatings-1][1];
@@ -100,7 +102,7 @@ function importRating (rid)
     ratMean[counter] = d3.mean(revi);
     firstRat[counter] = revi[0];
     //console.log(ratMean[0]);
-    counter++;  
+    counter++;
 
 }
 
@@ -110,25 +112,25 @@ var maxdate = new Date("Janurary 1, 2015 00:00:00");
 // plot the ratings
 function plotRating (revi_temp, revit_temp, svgname, rName)
 {
-    
+
     svgname = "#" + svgname;
     var yScale = d3.scale.linear().domain([0, 5])    // ratings between 0 and 100
-        .range([150, 50]); 
+        .range([150, 50]);
 
     // var mindate = revit_temp[0];
     // var maxdate = revit_temp[(revit_temp.length - 1)];
 
-    var xScale = d3.time.scale().domain([mindate, maxdate])  
+    var xScale = d3.time.scale().domain([mindate, maxdate])
         .range([50, 750]);
 
     d3.select(svgname).selectAll("text").remove();
 
     d3.select(svgname).append("text")
-        .attr("x", 50)             
+        .attr("x", 50)
         .attr("y", 20)
-        .style("font-size", "16px") 
+        .style("font-size", "16px")
         .text("---" + rName + "---");
-    
+
     var yearFormat = d3.time.format("%Y");
     //console.log(yearFormat(revit_temp[0]));
     d3.select(svgname)
@@ -148,15 +150,15 @@ function plotRating (revi_temp, revit_temp, svgname, rName)
         .orient("left")
         .ticks(5)
         .scale(yScale);
-        
+
     var xAxis = d3.svg.axis()
         .orient("bottom")
         .ticks(6)
         .scale(xScale);
-    
+
     // remove previous axis for previous restaurant
 
-    d3.select(svgname).selectAll("g").remove();     
+    d3.select(svgname).selectAll("g").remove();
 
     d3.select(svgname).append("g")
         .attr("class", "axises")
@@ -172,7 +174,7 @@ function plotRating (revi_temp, revit_temp, svgname, rName)
     //       .attr("transform", function(d) {
     //           return "translate(" + this.getBBox().height*-2 + "," + this.getBBox().height + ")rotate(-45)";
     //     });
-   
+
 }
 
 d3.json("reviews.json", function(json) {
