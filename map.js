@@ -159,7 +159,7 @@ d3.json("./az100.json", function(error, json) {
         selectedID = []
         for (var i = 0; i < markers.length; i++) {
 
-            // in the selection area and not been selected
+            // Not in the boundary or not selected
             if (! e.boxZoomBounds.contains(markers[i].getLatLng()) || unSelectedMarkerIndex.hasOwnProperty(i)) {
                 map.removeLayer(markers[i]);
                 unSelectedMarkerIndex.push(i);
