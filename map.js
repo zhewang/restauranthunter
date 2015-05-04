@@ -1,6 +1,16 @@
-var restaurant_data; //[business_id, name, lon, lat]
+var restaurant_data; //[business_id, name, lon, lat, average_rating]
 
 // custom marker for selected restaurant
+var plainMarker = L.icon({
+    iconUrl: './leaflet-0.8-dev/images/marker-icon.png',
+    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
+
+    iconSize:    [25, 41],
+    iconAnchor:  [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize:  [41, 41]
+});
+
 var starMarker1 = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-star1.png',
     shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
@@ -63,6 +73,15 @@ function GetMarkerbyStar(star) {
     return marker;
 };
 
+var map
+
+// area selection
+var markers = []
+var unSelectedMarkerIndex = new Array();
+var SelectedMarkers = new Array();
+var AddedRedMarkers = new Array();
+var selectedID = new Array();
+
 d3.json("./az100.json", function(error, json) {
     if (error) return console.warn(error);
     restaurant_data = json;
@@ -70,7 +89,7 @@ d3.json("./az100.json", function(error, json) {
     // create a map in the "map" div, set the view to a given place and zoom
     lon = restaurant_data[0][2]
     lat = restaurant_data[0][3]
-    var map = L.map('map').setView([lon, lat], 10);
+    map = L.map('map').setView([lon, lat], 10);
 
     // add an OpenStreetMap tile layer
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -126,16 +145,7 @@ d3.json("./az100.json", function(error, json) {
         }
     });
 
-    function highlightInMap(resID) {
-        console.log(resID);
-    }
 
-    // add markers
-    function onClick(e) {
-        plotByID([this._leaflet_id]);
-    }
-
-    var markers = []
     for (var i = 0; i < restaurant_data.length; i ++) {
          var marker = L.marker([restaurant_data[i][2], restaurant_data[i][3]], {icon: GetMarkerbyStar(restaurant_data[i][4])} ).on('click', onClick);
          marker._leaflet_id = restaurant_data[i][0];
@@ -143,9 +153,6 @@ d3.json("./az100.json", function(error, json) {
          markers[markers.length] = marker
     }
 
-    // area selection
-    var unSelectedMarkerIndex = new Array();
-    var AddedRedMarkers = new Array();
     map.on("boxzoomend", function(e) {
         // clear previous data
         for (var i = 0; i < AddedRedMarkers.length; i ++) {
@@ -155,12 +162,13 @@ d3.json("./az100.json", function(error, json) {
 
         AddedRedMarkers = [];
         unSelectedMarkerIndex = [];
+        SelectedMarkers = []
 
         selectedID = []
         for (var i = 0; i < markers.length; i++) {
 
             // Not in the boundary or not selected
-            if (! e.boxZoomBounds.contains(markers[i].getLatLng()) || unSelectedMarkerIndex.hasOwnProperty(i)) {
+            if (! e.boxZoomBounds.contains(markers[i].getLatLng())) {
                 map.removeLayer(markers[i]);
                 unSelectedMarkerIndex.push(i);
 
@@ -170,10 +178,11 @@ d3.json("./az100.json", function(error, json) {
                 AddedRedMarkers.push(marker);
             }
             else {
-                selectedID.push(marker._leaflet_id)
+                selectedID.push(markers[i]._leaflet_id);
+                SelectedMarkers.push(markers[i])
             }
         }
-        plotByID(selectedID)
+        plotByID(selectedID);
 
     });
 
@@ -199,5 +208,22 @@ d3.json("./az100.json", function(error, json) {
             unSelectedMarkerIndex = [];
 
         });
+
+    function highlightInMap(resID) {
+        // highlight the one selected in scatterplot by hidding others
+        for(var i = 0; i < SelectedMarkers.length; i ++) {
+            if(SelectedMarkers[i]._leaflet_id != resID) {
+                SelectedMarkers[i].setOpacity(0.25);
+            }
+            else {
+                SelectedMarkers[i].setOpacity(1);
+            }
+        }
+    }
+
+    // add markers
+    function onClick(e) {
+        plotByID([this._leaflet_id]);
+    }
 
 });

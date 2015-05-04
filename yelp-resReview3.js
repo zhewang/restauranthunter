@@ -23,7 +23,7 @@ function plotByID (business_id)
     numR = new Array(business_id.length);
     firstDate = new Array(business_id.length);
     lastDate = new Array(business_id.length);
-    resID = business_id;
+    resID = new Array(business_id.length);
     counter = 0;
 
     d3.select("body").selectAll(".svgclass").remove();  // clean all the drawings
@@ -47,6 +47,7 @@ function plotByID (business_id)
             }
 
             rName = getNamebyID(business_id[j]);      // actual name of restaurant
+            resID[j] = business_id[j]
             resName[j] = rName;
             restaurantID = business_id[j];            // restaurant id in the database
             importRating(restaurantID);
