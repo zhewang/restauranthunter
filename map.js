@@ -144,25 +144,25 @@ d3.json("./az100.json", function(error, json) {
     }
 
     // area selection
-    var SelectedMarkerIndex = new Array();
+    var unSelectedMarkerIndex = new Array();
     var AddedRedMarkers = new Array();
     map.on("boxzoomend", function(e) {
         // clear previous data
         for (var i = 0; i < AddedRedMarkers.length; i ++) {
             map.removeLayer(AddedRedMarkers[i])
-            markers[SelectedMarkerIndex[i]].addTo(map);
+            markers[unSelectedMarkerIndex[i]].addTo(map);
         }
 
         AddedRedMarkers = [];
-        SelectedMarkerIndex = [];
+        unSelectedMarkerIndex = [];
 
         selectedID = []
         for (var i = 0; i < markers.length; i++) {
 
             // in the selection area and not been selected
-            if (! e.boxZoomBounds.contains(markers[i].getLatLng()) || SelectedMarkerIndex.hasOwnProperty(i)) {
+            if (! e.boxZoomBounds.contains(markers[i].getLatLng()) || unSelectedMarkerIndex.hasOwnProperty(i)) {
                 map.removeLayer(markers[i]);
-                SelectedMarkerIndex.push(i);
+                unSelectedMarkerIndex.push(i);
 
                 var marker = L.marker(markers[i].getLatLng()).on('click', onClick);
                 marker._leaflet_id = markers[i]._leaflet_id;
@@ -182,7 +182,7 @@ d3.json("./az100.json", function(error, json) {
         .on("click", function() {
             for (var i = 0; i < AddedRedMarkers.length; i ++) {
                 map.removeLayer(AddedRedMarkers[i])
-                markers[SelectedMarkerIndex[i]].addTo(map);
+                markers[unSelectedMarkerIndex[i]].addTo(map);
             }
 
             // clean all the plots and table entries
@@ -196,7 +196,7 @@ d3.json("./az100.json", function(error, json) {
             d3.select("body").select("#lasRating").text("");
 
             AddedRedMarkers = [];
-            SelectedMarkerIndex = [];
+            unSelectedMarkerIndex = [];
 
         });
 
