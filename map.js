@@ -77,9 +77,10 @@ var map
 
 // area selection
 var markers = []
-var SelectedMarkers = new Array();
-var SelectedMarkerZIndex = new Array();
-var selectedID = new Array();
+var SelectedMarkers = [];
+var SelectedMarkerZIndex = [];
+var selectedID = [];
+var BrushedResID = []
 
 d3.json("./az100.json", function(error, json) {
     if (error) return console.warn(error);
@@ -108,21 +109,44 @@ d3.json("./az100.json", function(error, json) {
         .call(d3.svg.brush()
                 .x(xaxisRange)
                 .y(yaxisRange)
+                .on("brushstart", brushstart)
                 .on("brush", brushmove)
                 .on("brushend", brushend));
 
+    function brushstart() {
+        BrushedResID = [];
+        highlightInMap(BrushedResID);
+
+        // Clear table cotent
+        d3.select("body").select("#name").text("");
+        d3.select("body").select("#weiRating").text("");
+        d3.select("body").select("#aveRating").text("");
+        d3.select("body").select("#numRating").text("");
+        d3.select("body").select("#firRating").text("");
+        d3.select("body").select("#lasRating").text("");
+    }
+
     function brushmove() {
+        BrushedResID = [];
+
         var extent = d3.event.target.extent();
         d3.selectAll("circle").classed("hidden", function(d, i) {
-            console.log(firstRat[i], d);
-            return !(extent[0][0] <= firstRat[i] && firstRat[i] <= extent[1][0]
-                    && extent[0][1] <= d && d <= extent[1][1]);
+            inBrush = (extent[0][0] <= firstRat[i] && firstRat[i] <= extent[1][0]
+                      && extent[0][1] <= d && d <= extent[1][1]);
+            if(inBrush) { BrushedResID.push(resID[i]);}
+            return !inBrush;
         })
+
+        highlightInMap(BrushedResID);
     }
 
     function brushend() {
         if (d3.event.target.empty()) {
             d3.selectAll("circle").classed("hidden", false)
+            for(var i = 0; i < SelectedMarkers.length; i ++) {
+                SelectedMarkers[i].setOpacity(1);
+                SelectedMarkers[i].setZIndexOffset(SelectedMarkerZIndex[i]);
+            }
         }
     }
 
@@ -152,7 +176,6 @@ d3.json("./az100.json", function(error, json) {
     .on("click", function()
     {
         var mouseC = d3.mouse(this);
-        var onCircle = false;
         for (var k=0; k<firstRat.length; k++){
             if ((mouseC[0] + 5) > xaxisRange(firstRat[k]) && (mouseC[0] - 5) < xaxisRange(firstRat[k]))
             {
@@ -166,19 +189,17 @@ d3.json("./az100.json", function(error, json) {
                     d3.select("body").select("#lasRating").text(lastDate[k]);
 
                     onCircle = true
-                    highlightInMap(resID[k]);
+                    highlightInMap([resID[k]]);
 
                     // TODO update the bar chart, can't use plotbyID because this also update the scatterplot
+                    // We can use something like: UpdateReviewsChart(resIDs)
+                    // This function takes in a list of restaurant IDs and show the correspoinding reviews chart
+                    // without affecting the scatter plot and the underlying datas for the selected restaurants like
+                    // resName, firstRat, numR, ...
                 }
             }
         }
 
-        if (onCircle == false) { // click on blank area, show all selected restaurants
-            for(var i = 0; i < SelectedMarkers.length; i ++) {
-                SelectedMarkers[i].setOpacity(1);
-                SelectedMarkers[i].setZIndexOffset(SelectedMarkerZIndex[i]);
-            }
-        }
     });
 
 
@@ -234,9 +255,17 @@ d3.json("./az100.json", function(error, json) {
         });
 
     // Highlight the marker when click on corresponding scatterplot
-    function highlightInMap(resID) {
+    function highlightInMap(resIDs) {
         for(var i = 0; i < SelectedMarkers.length; i ++) {
-            if(SelectedMarkers[i]._leaflet_id == resID) {
+            flag = false;
+            for(var j = 0; j < resIDs.length; j ++) {
+                if(SelectedMarkers[i]._leaflet_id == resIDs[j]) {
+                    flag = true;
+                    break;
+                }
+            }
+
+            if(flag) {
                 SelectedMarkers[i].setOpacity(1);
                 SelectedMarkers[i].setZIndexOffset(10000);
             }
