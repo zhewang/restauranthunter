@@ -80,8 +80,14 @@ function plotByID (business_id)
         .attr("cx", function (d, i) { return xaxisRange(firstRat[i]);} )
         .attr("cy", function (d) { return yaxisRange(d);})
         .attr("r", 5)
-        .attr("fill", "red");
 
+    // hide other circles when click on one
+    d3.selectAll("circle")
+        .on("click", function(d, i) {
+            d3.selectAll("circle").classed("hidden", function (e, j) {
+                return d != e || i != j;
+            });
+        });
 }
 
 // function to load ratings for one restaurant
@@ -100,7 +106,7 @@ function importRating (rid)
     firstDate[counter] = rating[rid][0][1];
     lastDate[counter] = rating[rid][numRatings-1][1];
     numR[counter] = numRatings;
-    ratMean[counter] = d3.mean(revi);
+    ratMean[counter] = (d3.mean(revi)).toFixed(1);
     firstRat[counter] = revi[0];
     //console.log(ratMean[0]);
     counter++;

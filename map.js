@@ -102,6 +102,31 @@ d3.json("./az100.json", function(error, json) {
     var xAxis = d3.svg.axis().ticks(5).scale(xaxisRange);
     var yAxis = d3.svg.axis().ticks(5).scale(yaxisRange);
 
+    // Add brush
+    var brush = d3.select("#scatter").append("g")
+        .attr("class", "brush")
+        .call(d3.svg.brush()
+                .x(xaxisRange)
+                .y(yaxisRange)
+                .on("brush", brushmove)
+                .on("brushend", brushend));
+
+    function brushmove() {
+        var extent = d3.event.target.extent();
+        d3.selectAll("circle").classed("hidden", function(d, i) {
+            console.log(firstRat[i], d);
+            return !(extent[0][0] <= firstRat[i] && firstRat[i] <= extent[1][0]
+                    && extent[0][1] <= d && d <= extent[1][1]);
+        })
+    }
+
+    function brushend() {
+        if (d3.event.target.empty()) {
+            d3.selectAll("circle").classed("hidden", false)
+        }
+    }
+
+
     d3.select("#scatter").append("line")
         .attr("x1", 40)
         .attr("y1", 370)
@@ -155,6 +180,8 @@ d3.json("./az100.json", function(error, json) {
             }
         }
     });
+
+
 
     // Add markers to map
     for (var i = 0; i < restaurant_data.length; i ++) {
