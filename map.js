@@ -77,9 +77,8 @@ var map
 
 // area selection
 var markers = []
-var unSelectedMarkerIndex = new Array();
 var SelectedMarkers = new Array();
-var AddedRedMarkers = new Array();
+var SelectedMarkerZIndex = new Array();
 var selectedID = new Array();
 
 d3.json("./az100.json", function(error, json) {
@@ -128,6 +127,7 @@ d3.json("./az100.json", function(error, json) {
     .on("click", function()
     {
         var mouseC = d3.mouse(this);
+        var onCircle = false;
         for (var k=0; k<firstRat.length; k++){
             if ((mouseC[0] + 5) > xaxisRange(firstRat[k]) && (mouseC[0] - 5) < xaxisRange(firstRat[k]))
             {
@@ -139,13 +139,24 @@ d3.json("./az100.json", function(error, json) {
                     d3.select("body").select("#numRating").text(numR[k]);
                     d3.select("body").select("#firRating").text(firstDate[k]);
                     d3.select("body").select("#lasRating").text(lastDate[k]);
+
+                    onCircle = true
                     highlightInMap(resID[k]);
+
+                    // TODO update the bar chart, can't use plotbyID because this also update the scatterplot
                 }
+            }
+        }
+
+        if (onCircle == false) { // click on blank area, show all selected restaurants
+            for(var i = 0; i < SelectedMarkers.length; i ++) {
+                SelectedMarkers[i].setOpacity(1);
+                SelectedMarkers[i].setZIndexOffset(SelectedMarkerZIndex[i]);
             }
         }
     });
 
-
+    // Add markers to map
     for (var i = 0; i < restaurant_data.length; i ++) {
          var marker = L.marker([restaurant_data[i][2], restaurant_data[i][3]], {icon: GetMarkerbyStar(restaurant_data[i][4])} ).on('click', onClick);
          marker._leaflet_id = restaurant_data[i][0];
@@ -154,44 +165,34 @@ d3.json("./az100.json", function(error, json) {
     }
 
     map.on("boxzoomend", function(e) {
-        // clear previous data
-        for (var i = 0; i < AddedRedMarkers.length; i ++) {
-            map.removeLayer(AddedRedMarkers[i])
-            markers[unSelectedMarkerIndex[i]].addTo(map);
+        // reset
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setOpacity(1);
         }
-
-        AddedRedMarkers = [];
-        unSelectedMarkerIndex = [];
-        SelectedMarkers = []
-
-        selectedID = []
+        selectedID = [];
+        SelectedMarkers = [];
+        SelectedMarkerZIndex = [];
         for (var i = 0; i < markers.length; i++) {
 
             // Not in the boundary or not selected
             if (! e.boxZoomBounds.contains(markers[i].getLatLng())) {
-                map.removeLayer(markers[i]);
-                unSelectedMarkerIndex.push(i);
-
-                var marker = L.marker(markers[i].getLatLng()).on('click', onClick);
-                marker._leaflet_id = markers[i]._leaflet_id;
-                marker.addTo(map);
-                AddedRedMarkers.push(marker);
+                markers[i].setOpacity(0);
             }
             else {
                 selectedID.push(markers[i]._leaflet_id);
-                SelectedMarkers.push(markers[i])
+                SelectedMarkers.push(markers[i]);
+                SelectedMarkerZIndex.push(markers[i]._zIndex);
             }
         }
         plotByID(selectedID);
-
     });
 
     // reset selection
     d3.select("#reset")
         .on("click", function() {
-            for (var i = 0; i < AddedRedMarkers.length; i ++) {
-                map.removeLayer(AddedRedMarkers[i])
-                markers[unSelectedMarkerIndex[i]].addTo(map);
+            // resume all markers
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setOpacity(1);
             }
 
             // clean all the plots and table entries
@@ -203,26 +204,31 @@ d3.json("./az100.json", function(error, json) {
             d3.select("body").select("#numRating").text("");
             d3.select("body").select("#firRating").text("");
             d3.select("body").select("#lasRating").text("");
-
-            AddedRedMarkers = [];
-            unSelectedMarkerIndex = [];
-
         });
 
+    // Highlight the marker when click on corresponding scatterplot
     function highlightInMap(resID) {
-        // highlight the one selected in scatterplot by hidding others
         for(var i = 0; i < SelectedMarkers.length; i ++) {
-            if(SelectedMarkers[i]._leaflet_id != resID) {
-                SelectedMarkers[i].setOpacity(0.25);
+            if(SelectedMarkers[i]._leaflet_id == resID) {
+                SelectedMarkers[i].setOpacity(1);
+                SelectedMarkers[i].setZIndexOffset(10000);
             }
             else {
-                SelectedMarkers[i].setOpacity(1);
+                SelectedMarkers[i].setOpacity(0.3);
+                SelectedMarkers[i].setZIndexOffset(SelectedMarkerZIndex[i]);
             }
         }
     }
 
-    // add markers
+    // Click on a marker
     function onClick(e) {
+        for(var i = 0; i < markers.length; i ++) {
+            if(markers[i]._leaflet_id == this._leaflet_id)
+                markers[i].setOpacity(1);
+            else
+                markers[i].setOpacity(0);
+        }
+
         plotByID([this._leaflet_id]);
     }
 
