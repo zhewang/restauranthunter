@@ -1,3 +1,4 @@
+USE yelpdb;
 CREATE TABLE business (
     business_id CHAR(22),
     name VARCHAR(255) ,
