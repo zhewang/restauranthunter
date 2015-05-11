@@ -63,13 +63,6 @@ function plotByID (business_id)
 
     // draw weighted rating (x) vs avearage rating (y)
 
-    var color01 = "#91bfdb";     //blue
-    var color02 = "#ffffbf";     //white
-    var color03 = "#fc8d59";     //red
-    var colorScale = d3.scale.linear()
-        .domain([0, 2.5, 5])
-        .range([color01, color02, color03]);
-
     d3.select("#scatter").selectAll("circle").remove();
     d3.select("#scatter")//.append("svg").attr("width", 400).attr("height", 400).attr("id", "scatter")
         .selectAll("circle")
@@ -78,7 +71,6 @@ function plotByID (business_id)
         .append("circle")
         .attr("cx", function (d, i) { return xaxisRange(weightedR[i]);} )
         .attr("cy", function (d) { return yaxisRange(d);})
-        .attr("fill", function (d) {return colorScale(d);})
         .attr("r", 5);
 
     // hide other circles when click on one

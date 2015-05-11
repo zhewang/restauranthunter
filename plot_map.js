@@ -93,6 +93,10 @@ var rating;     // store the the json file after importing
 var formatDate = d3.time.format("%Y-%m-%d");
 
 function mainPlot(){
+    // ---------------------------------------------------------
+    // Draw the map
+    // ---------------------------------------------------------
+
     // create a map in the "map" div, set the view to a given place and zoom
     lon = restaurant_data[0][2]
     lat = restaurant_data[0][3]
@@ -121,6 +125,10 @@ function mainPlot(){
                   "Reset",
                   map);
 
+    // ---------------------------------------------------------
+    // Draw the scatter plot of the ratings
+    // ---------------------------------------------------------
+
     // draw the scatter plot (weighted rating vs average rating) axises
     var xAxis = d3.svg.axis().ticks(5).scale(xaxisRange);
     var yAxis = d3.svg.axis().ticks(5).scale(yaxisRange);
@@ -142,7 +150,7 @@ function mainPlot(){
         .attr("transform", "translate(30, 0)")
         .call(rateAxis); // call the axis generator
 
-    //plot the rating color scale
+    //plot the legend of scatter plot
     gradientPlot = function (c1, c2, c3)
     {
         var gradientScale = d3.scale.linear()
@@ -173,17 +181,23 @@ function mainPlot(){
                 .on("brush", brushmove)
                 .on("brushend", brushend));
 
-    function brushstart() {
-        BrushedResID = [];
-        highlightInMap(BrushedResID);
-
-        // Clear table cotent
+    function clearDetail() {
+        // Clear table content
         d3.select("body").select("#name").text("");
         d3.select("body").select("#weiRating").text("");
         d3.select("body").select("#aveRating").text("");
         d3.select("body").select("#numRating").text("");
         d3.select("body").select("#firRating").text("");
         d3.select("body").select("#lasRating").text("");
+
+        // Clear review history
+        d3.select("#historyPlot").selectAll("circle").remove();
+    }
+
+    function brushstart() {
+        BrushedResID = [];
+        highlightInMap(BrushedResID);
+        clearDetail();
     }
 
     function brushmove() {
@@ -207,6 +221,7 @@ function mainPlot(){
                 SelectedMarkers[i].setOpacity(1);
                 SelectedMarkers[i].setZIndexOffset(SelectedMarkerZIndex[i]);
             }
+            plotByID(selectedID);
         }
     }
 
@@ -231,7 +246,7 @@ function mainPlot(){
 
     // Click on scatterplot
     d3.select("#scatter")
-    .on("click", function()
+    .on("mousedown", function()
     {
         var mouseC = d3.mouse(this);
         for (var k=0; k<weightedR.length; k++){
@@ -302,7 +317,11 @@ function mainPlot(){
 
     });
 
-    // draw the initial history plot
+    // ----------------------------------------------------------
+    // Draw the history of reviews
+    // ----------------------------------------------------------
+
+    // draw the axises
     d3.select("#historyPlot").append("text")
         .attr("id", "rNm")
         .attr("x", 50)
@@ -330,19 +349,16 @@ function mainPlot(){
         .attr("transform", "translate(0,150)")
         .call(xAxis);
 
+    // ---------------------------------------------------------
+    // Marker on map
+    // ---------------------------------------------------------
+
     // Add markers to map
     for (var i = 0; i < restaurant_data.length; i ++) {
          var marker = L.marker([restaurant_data[i][2], restaurant_data[i][3]], {icon: GetMarkerbyStar(restaurant_data[i][4])} ).on('click', onClick);
          marker._leaflet_id = restaurant_data[i][0];
          marker.addTo(map);
          markers[markers.length] = marker
-    }
-
-    // Initialize selected markers
-    for (var i = 0; i < markers.length; i++) {
-        selectedID.push(markers[i]._leaflet_id);
-        SelectedMarkers.push(markers[i]);
-        SelectedMarkerZIndex.push(markers[i]._zIndex);
     }
 
     map.on("boxzoomend", function(e) {
@@ -403,6 +419,11 @@ function mainPlot(){
     }
 
     // plot all the restaurant at the begining;
+    for (var i = 0; i < markers.length; i++) {
+        selectedID.push(markers[i]._leaflet_id);
+        SelectedMarkers.push(markers[i]);
+        SelectedMarkerZIndex.push(markers[i]._zIndex);
+    }
     plotByID(selectedID);
 };
 
