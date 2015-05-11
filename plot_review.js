@@ -1,4 +1,3 @@
-
 var revi;       // store ratings for one restaruant
 var reviMax = new Array(2);    // store ratings for the restaruant with hightest ratings
 var revit;      // store the date of corresponding rating
@@ -17,13 +16,9 @@ var weightedR;   // store the weighted ratings of selected restaurant
 // funtiont generate date object from database entry
 var formatDate = d3.time.format("%Y-%m-%d");
 
-// d3.json("reviews.json", function(json) {
-//         rating = json;
-//     });
-
 function plotByID (business_id)
 {
-    
+
     // create new array to store mean rating for all the restaurant
     ratMean = new Array(business_id.length);
     firstRat = new Array(business_id.length);
@@ -39,14 +34,14 @@ function plotByID (business_id)
 
     for (var j=0; j<business_id.length; j++)
     {
-        console.log(business_id[j]);
-        if (rating.hasOwnProperty(business_id[j])) 
+        //console.log(business_id[j]);
+        if (rating.hasOwnProperty(business_id[j]))
         //if (1 == 1)
         {
             function getNamebyID(id) {
                 for (var i = 0; i < restaurant_data.length; i ++)
                     if (restaurant_data[i][0] == business_id[j]) {
-                        
+
                         return restaurant_data[i][1];
                     };
             }
@@ -56,7 +51,7 @@ function plotByID (business_id)
             resName[j] = rName;
             restaurantID = business_id[j];            // restaurant id in the database
             importRating(restaurantID);               // import data of one restaurant
-            
+
         } else {
             alert("Don't have reviews for this restaurant")
         }
@@ -85,7 +80,7 @@ function plotByID (business_id)
         .attr("cy", function (d) { return yaxisRange(d);})
         .attr("fill", function (d) {return colorScale(d);})
         .attr("r", 5);
-        
+
     // hide other circles when click on one
     d3.selectAll("circle")
         .on("click", function(d, i) {
@@ -104,7 +99,7 @@ function calWeight (reviSum, indexR, numOfRatings)
     weightedR[indexR] = (numOfRatings/(numOfRatings + 30)*newMean + 30/(numOfRatings + 30)*3).toFixed(1);
 }
 
-// calculate the restaurant with maximum weighted rating 
+// calculate the restaurant with maximum weighted rating
 function maxWeight (wR, business_id)
 {
     var maxIndex = 0;
@@ -114,7 +109,7 @@ function maxWeight (wR, business_id)
             maxIndex = k+1;
     }
 
-    console.log(counter, wR.length, weightedR[maxIndex]);
+    //console.log(counter, wR.length, weightedR[maxIndex]);
     // update table
     d3.select("body").select("#name").text(resName[maxIndex]);
     d3.select("body").select("#weiRating").text(weightedR[maxIndex]);
@@ -131,7 +126,7 @@ function maxWeight (wR, business_id)
         .text("---" + resName[maxIndex] + "---");
 
     maxResID = business_id[maxIndex];            // restaurant id in the database with max weighted rating
-    
+
     // import the data of the restaurant with hightest weighted score
     var numRatings = rating[maxResID].length; // number of ratings for this restaurant
     reviMax[0] = new Array(numRatings);     // import ratings
@@ -161,7 +156,7 @@ function importRating (rid)
 {
     var numRatings = rating[rid].length; // number of ratings for this restaurant
     var reviSum = 0;
-    
+
     revi = new Array(numRatings);         // import ratings
     revit = new Array(numRatings);        // import date of ratings
         for (var k=0; k<numRatings; k++)
@@ -173,7 +168,7 @@ function importRating (rid)
             else
                 reviSum = reviSum + rating[rid][k][0];
         }
-    
+
     firstDate[counter] = rating[rid][0][1];
     lastDate[counter] = rating[rid][numRatings-1][1];
     numR[counter] = numRatings;

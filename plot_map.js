@@ -220,10 +220,8 @@ function mainPlot(){
     {
         var mouseC = d3.mouse(this);
         for (var k=0; k<weightedR.length; k++){
-            if ((mouseC[0] + 5) > xaxisRange(weightedR[k]) && (mouseC[0] - 5) < xaxisRange(weightedR[k]))
-            {
-                if ((mouseC[1] + 5) > yaxisRange(ratMean[k]) && (mouseC[1] - 5) < yaxisRange(ratMean[k]))
-                {
+            if ((mouseC[0] + 5) > xaxisRange(weightedR[k]) && (mouseC[0] - 5) < xaxisRange(weightedR[k])) {
+                if ((mouseC[1] + 5) > yaxisRange(ratMean[k]) && (mouseC[1] - 5) < yaxisRange(ratMean[k])) {
                     d3.select("body").select("#name").text(resName[k]);
                     d3.select("body").select("#weiRating").text(weightedR[k]);
                     d3.select("body").select("#aveRating").text(ratMean[k]);
@@ -416,6 +414,7 @@ d3.json("./az100.json", function(error, json) {
 
     d3.json("reviews.json", function(json) {
         rating = json;
+        // TODO let selectedID be all the restaurant IDs
         mainPlot();
     });
 
