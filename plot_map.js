@@ -327,6 +327,13 @@ function mainPlot(){
          markers[markers.length] = marker
     }
 
+    // Initialize selected markers
+    for (var i = 0; i < markers.length; i++) {
+        selectedID.push(markers[i]._leaflet_id);
+        SelectedMarkers.push(markers[i]);
+        SelectedMarkerZIndex.push(markers[i]._zIndex);
+    }
+
     map.on("boxzoomend", function(e) {
         // reset
         for (var i = 0; i < markers.length; i++) {
