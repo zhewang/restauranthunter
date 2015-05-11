@@ -3,62 +3,50 @@ var restaurant_data; //[business_id, name, lon, lat, average_rating]
 // custom marker for selected restaurant
 var plainMarker = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-icon.png',
-    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
 
     iconSize:    [25, 41],
     iconAnchor:  [12, 41],
     popupAnchor: [1, -34],
-    shadowSize:  [41, 41]
 });
 
 var starMarker1 = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-star1.png',
-    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
 
     iconSize:    [25, 41],
     iconAnchor:  [12, 41],
     popupAnchor: [1, -34],
-    shadowSize:  [41, 41]
 });
 
 var starMarker2 = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-star2.png',
-    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
 
     iconSize:    [25, 41],
     iconAnchor:  [12, 41],
     popupAnchor: [1, -34],
-    shadowSize:  [41, 41]
 });
 
 var starMarker3 = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-star3.png',
-    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
 
     iconSize:    [25, 41],
     iconAnchor:  [12, 41],
     popupAnchor: [1, -34],
-    shadowSize:  [41, 41]
 });
 
 var starMarker4 = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-star4.png',
-    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
 
     iconSize:    [25, 41],
     iconAnchor:  [12, 41],
     popupAnchor: [1, -34],
-    shadowSize:  [41, 41]
 });
 
 var starMarker5 = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-star5.png',
-    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
 
     iconSize:    [25, 41],
     iconAnchor:  [12, 41],
     popupAnchor: [1, -34],
-    shadowSize:  [41, 41]
 });
 
 function GetMarkerbyStar(star) {
