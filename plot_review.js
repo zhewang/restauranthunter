@@ -101,6 +101,8 @@ function maxWeight (wR, business_id)
             maxIndex = k+1;
     }
 
+    maxResID = business_id[maxIndex];            // restaurant id in the database with max weighted rating
+
     //console.log(counter, wR.length, weightedR[maxIndex]);
     // update table
     d3.select("body").select("#name").text(resName[maxIndex]);
@@ -116,8 +118,6 @@ function maxWeight (wR, business_id)
     d3.select("#historyPlot").append("text")
         .attr("id", "rNm").attr("x", 50).attr("y", 20)
         .text("Rating history of " + resName[maxIndex]);
-
-    maxResID = business_id[maxIndex];            // restaurant id in the database with max weighted rating
 
     // import the data of the restaurant with hightest weighted score
     var numRatings = rating[maxResID].length; // number of ratings for this restaurant

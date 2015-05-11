@@ -101,6 +101,7 @@ function mainPlot(){
     lon = restaurant_data[0][2]
     lat = restaurant_data[0][3]
     map = L.map('map').setView([lon, lat], 10);
+    map.scrollWheelZoom.disable();
 
     // add an OpenStreetMap tile layer
     L.tileLayer('http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png', {
@@ -121,7 +122,10 @@ function mainPlot(){
                          SelectedMarkers.push(markers[i]);
                          SelectedMarkerZIndex.push(markers[i]._zIndex);
                      }
-                     plotByID(selectedID);},
+                     plotByID(selectedID);
+                     map.setView([restaurant_data[0][2], restaurant_data[0][3]
+], 10)
+                  },
                   "Reset",
                   map);
 
@@ -284,16 +288,6 @@ function mainPlot(){
 
                     importRating1 (restaurantID1);
 
-                    // get the name of the restaurant
-                    function getNamebyID(id) {
-                        for (var i = 0; i < restaurant_data.length; i ++)
-                            if (restaurant_data[i][0] == id) {
-                                return restaurant_data[i][1];
-                            };
-                    }
-
-                    //var rName = getNamebyID(restaurantID1);
-
                     d3.select("body").select("#historyPlot").selectAll("circle").remove();
                     d3.select("body").select("#historyPlot").select("#rNm").remove();
                     d3.select("#historyPlot").append("text")
@@ -418,6 +412,10 @@ function mainPlot(){
         plotByID([this._leaflet_id]);
     }
 
+    // --------------------------------------------
+    // Others
+    // --------------------------------------------
+
     // plot all the restaurant at the begining;
     for (var i = 0; i < markers.length; i++) {
         selectedID.push(markers[i]._leaflet_id);
@@ -426,8 +424,6 @@ function mainPlot(){
     }
     plotByID(selectedID);
 };
-
-
 
 d3.json("./az100.json", function(error, json) {
     if (error) return console.warn(error);
