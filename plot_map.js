@@ -104,6 +104,23 @@ function mainPlot(){
         styles: 'grayscale'
     }).addTo(map);
 
+    // add reset button (using easyButton)
+    L.easyButton("fa-rotate-left",
+                 function() {
+                     // resume all markers
+                     for (var i = 0; i < markers.length; i++) {
+                         markers[i].setOpacity(1);
+                     }
+
+                     for (var i = 0; i < markers.length; i++) {
+                         selectedID.push(markers[i]._leaflet_id);
+                         SelectedMarkers.push(markers[i]);
+                         SelectedMarkerZIndex.push(markers[i]._zIndex);
+                     }
+                     plotByID(selectedID);},
+                  "Reset",
+                  map);
+
     // draw the scatter plot (weighted rating vs average rating) axises
     var xAxis = d3.svg.axis().ticks(5).scale(xaxisRange);
     var yAxis = d3.svg.axis().ticks(5).scale(yaxisRange);
@@ -350,23 +367,6 @@ function mainPlot(){
         }
         plotByID(selectedID);
     });
-
-    // reset selection
-    d3.select("#reset")
-        .on("click", function() {
-            // resume all markers
-            for (var i = 0; i < markers.length; i++) {
-                markers[i].setOpacity(1);
-            }
-
-            for (var i = 0; i < markers.length; i++) {
-                selectedID.push(markers[i]._leaflet_id);
-                SelectedMarkers.push(markers[i]);
-                SelectedMarkerZIndex.push(markers[i]._zIndex);
-            }
-            plotByID(selectedID);
-
-        });
 
     // Highlight the marker when click on corresponding scatterplot
     function highlightInMap(resIDs) {
