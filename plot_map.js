@@ -359,7 +359,12 @@ function mainPlot(){
                 markers[i].setOpacity(1);
             }
 
-            plotByID(allIDs);
+            for (var i = 0; i < markers.length; i++) {
+                selectedID.push(markers[i]._leaflet_id);
+                SelectedMarkers.push(markers[i]);
+                SelectedMarkerZIndex.push(markers[i]._zIndex);
+            }
+            plotByID(selectedID);
 
         });
 
