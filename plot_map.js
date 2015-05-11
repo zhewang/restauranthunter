@@ -380,7 +380,7 @@ function mainPlot(){
                 SelectedMarkers[i].setZIndexOffset(10000);
             }
             else {
-                SelectedMarkers[i].setOpacity(0.3);
+                SelectedMarkers[i].setOpacity(0.2);
                 SelectedMarkers[i].setZIndexOffset(SelectedMarkerZIndex[i]);
             }
         }
