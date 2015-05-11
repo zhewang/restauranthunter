@@ -9,18 +9,38 @@
      <script src="./plot_review.js"></script>
 
      <style>
+        #container_left {
+            width: 800px;
+            height: 530px;
+            float: left;
+        }
+
+        #container_right {
+            width: 450px;
+            height: 530px;
+            float: left;
+        }
+
+        #container_bottom_left {
+            width: 800px;
+            height: 100px;
+            float: left;
+        }
+
+        #container_bottom_right {
+            width: 250px;
+            height: 100px;
+            float: left;
+        }
+
         #map { 
-            height: 600px; 
+            height: 530px; 
             width: 800px;
         }
 
-        .right{
-            overflow:hidden;
-            background:#f0f0f0;
-        }
-
-        .left{
-            float:left;
+        #usage {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 12px;
         }
 
         .axises path{
@@ -34,10 +54,6 @@
             stroke: black;
             stroke-width: 1;
         }
-        <!--.axises text {-->
-            <!--font-family: sans-serif;-->
-            <!--font-size: 14px;-->
-        <!--}-->
 
         .res_detail{
             background-color: #f0f0f0;
@@ -98,18 +114,36 @@
 </head>
 
 <body>
-    <div class="left" id="map"></div>
+    <div id="container_left">
+        <!--map-->
+        <div id="map"></div>
+    </div> 
 
-    <div class="right">
+    <div id="container_right">
+        <div style="margin-left:10px" width = "440" height = "150">
+        <h3>Dinner Map</h3>
+        <p id="usage">
+        Usages: </br>
+        [shift + mouse] to select an area in the map and the scatter plots </br>
+        [single click] on marker or scatter plot to select individual restaurant
+        </p>
+        </div>
+
+        <!--Average rating/weighted rating scatter plot-->
         <svg id="scatter" width="500" height="400">
             <text x="350" y="360">Weighted Rating</text>
             <text x="130" y="20">Average Rating </text>
         </svg>
+    </div> 
+
+    <div id="container_bottom_left">
+        <!--review histroy plot-->
+        <svg id="historyPlot" width="800" height="200"></svg>
+        <!--Restaurant detail information-->
     </div>
 
-    <div class="res_detail" width = "400" height = "200">
-
-        <table class="table1" >
+    <div id="container_bottom_right" style="margin-left:30px">
+        <table>
             <tr>
                 <th>&nbsp;&nbsp;Restaurant Name:&nbsp;&nbsp;</th>
                 <td id="name"></td> 
@@ -125,44 +159,19 @@
             <tr>
                 <th>&nbsp;&nbsp;# of Rating:&nbsp;&nbsp;</th>
                 <td id="numRating"></td> 
-            <tr>
-                <th>&nbsp;&nbsp;First Rating:&nbsp;&nbsp;</th>
-                <td id="firRating"></td> 
-            </tr>
-            <tr>
-                <th>&nbsp;&nbsp;Last Rating:&nbsp;&nbsp;</th>
-                <td id="lasRating"></td> 
-            </tr>
+                <tr>
+                    <th>&nbsp;&nbsp;First Rating:&nbsp;&nbsp;</th>
+                    <td id="firRating"></td> 
+                </tr>
+                <tr>
+                    <th>&nbsp;&nbsp;Last Rating:&nbsp;&nbsp;</th>
+                    <td id="lasRating"></td> 
+                </tr>
             </tr>
         </table>
-
     </div>
 
-    <div class="right">
-        <svg id="introduction" width="500" height="200">
-            <text x="30" y="20" fill="black">
-                The goal of the visualization tool is to give users weighted restaurant </text>
-            <text x="10" y="40" fill="black">
-                ratings which might help them make better choice. We calculated weighted </text>
-            <text x="10" y="60" fill="black">
-                ratings by giving early rating less weights and less wieght for mean rating  </text>
-            <text x="10" y="80" fill="black">
-                with less total number of ratings. </text>
-            <text x="10" y="120" fill="blue">
-                Usages: </text>
-            <text x="20" y="140" fill="blue">
-                [shift + mouse] to select an area in the map and the scatter plots </text>
-            <text x="20" y="160" fill="blue">
-                [single click] on the map and scatter plot to select individual restaurant </text>
-        </svg>
-    </div>
-
-
-    <div class="right"> 
-        <svg id="historyPlot" width="800" height="200"></svg>
-
-    </div>
-
+    <!--reset button-->
     <div>
         <button id="reset">Reset</button>
     </div>
