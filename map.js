@@ -1,5 +1,3 @@
-var restaurant_data; //[business_id, name, lon, lat, average_rating]
-
 // custom marker for selected restaurant
 var plainMarker = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-icon.png',
@@ -74,6 +72,7 @@ function GetMarkerbyStar(star) {
 };
 
 var map
+var restaurant_data; //[business_id, name, lon, lat, average_rating]
 
 // area selection
 var markers = []
@@ -93,15 +92,7 @@ var rating;     // store the the json file after importing
 // funtiont generate date object from database entry
 var formatDate = d3.time.format("%Y-%m-%d");
 
-
-d3.json("reviews.json", function(json) {
-        rating = json;
-    });
-
-d3.json("./az100.json", function(error, json) {
-    if (error) return console.warn(error);
-    restaurant_data = json;
-
+function mainPlot(){
     // create a map in the "map" div, set the view to a given place and zoom
     lon = restaurant_data[0][2]
     lat = restaurant_data[0][3]
@@ -415,5 +406,17 @@ d3.json("./az100.json", function(error, json) {
     }
 
     plotByID(allIDs);
+};
+
+
+
+d3.json("./az100.json", function(error, json) {
+    if (error) return console.warn(error);
+    restaurant_data = json;
+
+    d3.json("reviews.json", function(json) {
+        rating = json;
+        mainPlot();
+    });
 
 });
