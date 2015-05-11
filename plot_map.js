@@ -1,39 +1,39 @@
 // custom marker for selected restaurant
 var plainMarker = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-icon.png',
-    iconSize:    [12, 20],
-    iconAnchor:  [6, 20],
+    iconSize:    [18, 30],
+    iconAnchor:  [9, 30],
 });
 
 var starMarker1 = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-star1.png',
-    iconSize:    [12, 20],
-    iconAnchor:  [6, 20],
-});
+    iconSize:    [18, 30],
+    iconAnchor:  [9, 30],
+  });
 
 var starMarker2 = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-star2.png',
-    iconSize:    [12, 20],
-    iconAnchor:  [6, 20],
-});
+    iconSize:    [18, 30],
+    iconAnchor:  [9, 30],
+   });
 
 var starMarker3 = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-star3.png',
-    iconSize:    [12, 20],
-    iconAnchor:  [6, 20],
-});
+    iconSize:    [18, 30],
+    iconAnchor:  [9, 30],
+   });
 
 var starMarker4 = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-star4.png',
-    iconSize:    [12, 20],
-    iconAnchor:  [6, 20],
-});
+    iconSize:    [18, 30],
+    iconAnchor:  [9, 30],
+  });
 
 var starMarker5 = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-star5.png',
-    iconSize:    [12, 20],
-    iconAnchor:  [6, 20],
-});
+    iconSize:    [18, 30],
+    iconAnchor:  [9, 30],
+  });
 
 function GetMarkerbyStar(star) {
     var marker = L.Marker;
@@ -76,7 +76,7 @@ function mainPlot(){
     // create a map in the "map" div, set the view to a given place and zoom
     lon = restaurant_data[0][2]
     lat = restaurant_data[0][3]
-    map = L.map('map').setView([lon, lat], 10);
+    map = L.map('map').setView([lon, lat], 11);
     map.scrollWheelZoom.disable();
 
     // add an OpenStreetMap tile layer
