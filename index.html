@@ -6,9 +6,6 @@
      <script src="./leaflet-0.8-dev/leaflet-src.js"></script>
      <script src="./d3.min.js" charset="utf-8"></script>
 
-     <script src="./map.js"></script>
-     <script src="yelp-resReview3.js"></script>
-
      <style>
         #map { 
             height: 600px; 
@@ -74,50 +71,77 @@
             shape-rendering: crispEdges;
 
      </style>
+
 </head>
 
 <body>
-<div class="left" id="map"></div>
-<div class="right">
-    <svg id="scatter" width="400" height="400"></svg>
-</div>
+    <div class="left" id="map"></div>
+    <div class="right">
+        <svg id="scatter" width="500" height="400">
+            <text x="380" y="360" fill="blue">Weighted Rating</text>
+            <text x="150" y="20" fill="blue">Average Rating </text>
 
-<div class="table2" width="400" height="200">
+        </svg>
+    </div>
 
-    <table class="table1" >
-        <tr>
-            <th>&nbsp;&nbsp;Name:&nbsp;&nbsp;</th>
-            <td id="name"></td> 
-        </tr>
-        <tr>
-            <th>&nbsp;&nbsp;Weighted Rating:&nbsp;&nbsp;</th>
-            <td id="weiRating"></td> 
-        </tr>
-        <tr>
-            <th>&nbsp;&nbsp;Average Rating:&nbsp;&nbsp;</th>
-            <td id="aveRating"></td> 
-        </tr>
-        <tr>
-            <th>&nbsp;&nbsp;# of Rating:&nbsp;&nbsp;</th>
-            <td id="numRating"></td> 
-        <tr>
-            <th>&nbsp;&nbsp;First Rating:&nbsp;&nbsp;</th>
-            <td id="firRating"></td> 
-        </tr>
-        <tr>
-            <th>&nbsp;&nbsp;Last Rating:&nbsp;&nbsp;</th>
-            <td id="lasRating"></td> 
-        </tr>
-        </tr>
-    </table>
+    <div class="table2" width = "400" height = "200">
 
-</div>
+        <table class="table1" >
+            <tr>
+                <th>&nbsp;&nbsp;Name:&nbsp;&nbsp;</th>
+                <td id="name"></td> 
+            </tr>
+            <tr>
+                <th>&nbsp;&nbsp;Weighted Rating:&nbsp;&nbsp;</th>
+                <td id="weiRating"></td> 
+            </tr>
+            <tr>
+                <th>&nbsp;&nbsp;Average Rating:&nbsp;&nbsp;</th>
+                <td id="aveRating"></td> 
+            </tr>
+            <tr>
+                <th>&nbsp;&nbsp;# of Rating:&nbsp;&nbsp;</th>
+                <td id="numRating"></td> 
+            <tr>
+                <th>&nbsp;&nbsp;First Rating:&nbsp;&nbsp;</th>
+                <td id="firRating"></td> 
+            </tr>
+            <tr>
+                <th>&nbsp;&nbsp;Last Rating:&nbsp;&nbsp;</th>
+                <td id="lasRating"></td> 
+            </tr>
+            </tr>
+        </table>
 
+    </div>
 
-<div>
-    <button id="reset">Reset</button>
-</div>
+    <div>
+        <button id="reset">Reset</button>
+    </div>
+    <div class="left"> 
+        <svg id="historyPlot" width="800" height="200"></svg>
 
+    </div>
+    <div class="right">
+    <svg id="algorithm" width="500" height="200">
+            <text x="30" y="20" fill="black">
+                The goal of the visualization tool is to give users weighted restaurant </text>
+            <text x="10" y="40" fill="black">
+                ratings which might help them make better choice. We calculated weighted </text>
+            <text x="10" y="60" fill="black">
+                ratings by giving early rating less weights and less wieght for mean rating  </text>
+            <text x="10" y="80" fill="black">
+                with less total number of ratings. </text>
+            <text x="10" y="120" fill="blue">
+                Usages: </text>
+            <text x="20" y="140" fill="blue">
+                [shift + mouse] to select an area in the map and the scatter plots </text>
+            <text x="20" y="160" fill="blue">
+                [single click] on the map and scatter plot to select individual restaurant </text>
+        </svg>
+    </div>
 
 </body>
+    <script src="./map.js"></script>
+    <script src="yelp-resReview3.js"></script>
 </html>
