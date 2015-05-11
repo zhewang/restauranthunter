@@ -144,11 +144,7 @@ function maxWeight (wR, business_id)
         .append("circle")
         .attr("cx", function(d,i) { return xScale(reviMax[1][i]); })
         .attr("cy", function(d) { return yScale(d); })
-        .attr("r", function(d,i) { if (yearFormat(reviMax[1][i]) > 2010 && yearFormat(reviMax[1][i]) < 2015) return 4; else return 0;})
-        .attr("fill", "red")
-        .attr("stroke", "black")
-        .attr("stroke-width", 1);
-
+        .attr("r", function(d,i) { if (yearFormat(reviMax[1][i]) > 2010 && yearFormat(reviMax[1][i]) < 2015) return 3; else return 0;})
 }
 
 // function to load ratings for one restaurant

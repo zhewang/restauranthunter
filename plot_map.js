@@ -277,12 +277,8 @@ function mainPlot(){
                         .append("circle")
                         .attr("cx", function(d,i) { return xScale(revit[i]); })
                         .attr("cy", function(d) { return yScale(d); })
-                        .attr("r", function(d,i) { if (yearFormat(revit[i]) > 2010 && yearFormat(revit[i]) < 2015) return 4; else return 0;})
+                        .attr("r", function(d,i) { if (yearFormat(revit[i]) > 2010 && yearFormat(revit[i]) < 2015) return 3; else return 0;})
                         //.attr("fill", function(d,i) {if (i<firstN) return "red"; else return "blue";})
-                        .attr("fill", "red")
-                        .attr("stroke", "black")
-                        .attr("stroke-width", 1);
-
                 }
             }
         }
