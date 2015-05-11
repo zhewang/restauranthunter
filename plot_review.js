@@ -32,13 +32,9 @@ function plotByID (business_id)
     weightedR = new Array(business_id.length);
     counter = 0;
 
-    //console.log(business_id[0]);
-
     for (var j=0; j<business_id.length; j++)
     {
-        //console.log(business_id[j]);
         if (rating.hasOwnProperty(business_id[j]))
-        //if (1 == 1)
         {
             function getNamebyID(id) {
                 for (var i = 0; i < restaurant_data.length; i ++)
@@ -69,7 +65,7 @@ function plotByID (business_id)
         .data(ratMean)
         .enter()
         .append("circle")
-        .attr("cx", function (d, i) { return xaxisRange(weightedR[i]);} )
+        .attr("cx", function (d, i) {return xaxisRange(weightedR[i]);} )
         .attr("cy", function (d) { return yaxisRange(d);})
         .attr("r", 5);
 

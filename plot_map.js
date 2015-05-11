@@ -1,62 +1,38 @@
 // custom marker for selected restaurant
 var plainMarker = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-icon.png',
-    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
-
-    iconSize:    [25, 41],
-    iconAnchor:  [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize:  [41, 41]
+    iconSize:    [12, 20],
+    iconAnchor:  [6, 20],
 });
 
 var starMarker1 = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-star1.png',
-    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
-
-    iconSize:    [25, 41],
-    iconAnchor:  [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize:  [41, 41]
+    iconSize:    [12, 20],
+    iconAnchor:  [6, 20],
 });
 
 var starMarker2 = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-star2.png',
-    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
-
-    iconSize:    [25, 41],
-    iconAnchor:  [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize:  [41, 41]
+    iconSize:    [12, 20],
+    iconAnchor:  [6, 20],
 });
 
 var starMarker3 = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-star3.png',
-    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
-
-    iconSize:    [25, 41],
-    iconAnchor:  [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize:  [41, 41]
+    iconSize:    [12, 20],
+    iconAnchor:  [6, 20],
 });
 
 var starMarker4 = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-star4.png',
-    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
-
-    iconSize:    [25, 41],
-    iconAnchor:  [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize:  [41, 41]
+    iconSize:    [12, 20],
+    iconAnchor:  [6, 20],
 });
 
 var starMarker5 = L.icon({
     iconUrl: './leaflet-0.8-dev/images/marker-star5.png',
-    shadowUrl: './leaflet-0.8-dev/images/marker-shadow.png',
-
-    iconSize:    [25, 41],
-    iconAnchor:  [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize:  [41, 41]
+    iconSize:    [12, 20],
+    iconAnchor:  [6, 20],
 });
 
 function GetMarkerbyStar(star) {
@@ -425,13 +401,14 @@ function mainPlot(){
     plotByID(selectedID);
 };
 
-d3.json("./az100.json", function(error, json) {
+d3.json("./reviews.json", function(error, json) {
     if (error) return console.warn(error);
-    restaurant_data = json;
+    rating = json;
 
-    d3.json("reviews.json", function(json) {
-        rating = json;
-        // TODO let selectedID be all the restaurant IDs
+    d3.json("./az100.json", function(error, json) {
+        if (error) return console.warn(error);
+        restaurant_data= json;
+        console.log(rating);
         mainPlot();
     });
 
