@@ -70,12 +70,12 @@ function plotByID (business_id)
         .attr("r", 5);
 
     // hide other circles when click on one
-    d3.selectAll("circle")
-        .on("click", function(d, i) {
-            d3.select("#scatter").selectAll("circle").classed("hidden", function (e, j) {
-                return d != e || i != j;
-            });
-        });
+    //d3.selectAll("circle")
+        //.on("click", function(d, i) {
+            //d3.select("#scatter").selectAll("circle").classed("hidden", function (e, j) {
+                //return d != e || i != j;
+            //});
+        //});
 }
 
 

@@ -232,60 +232,70 @@ function mainPlot(){
         for (var k=0; k<weightedR.length; k++){
             if ((mouseC[0] + 5) > xaxisRange(weightedR[k]) && (mouseC[0] - 5) < xaxisRange(weightedR[k])) {
                 if ((mouseC[1] + 5) > yaxisRange(ratMean[k]) && (mouseC[1] - 5) < yaxisRange(ratMean[k])) {
-                    d3.select("body").select("#name").text(resName[k]);
-                    d3.select("body").select("#weiRating").text(weightedR[k]);
-                    d3.select("body").select("#aveRating").text(ratMean[k]);
-                    d3.select("body").select("#numRating").text(numR[k]);
-                    d3.select("body").select("#firRating").text(firstDate[k]);
-                    d3.select("body").select("#lasRating").text(lastDate[k]);
-
-                    onCircle = true
-                    highlightInMap([resID[k]]);
-
-                    // plot single restaurant rating through the time
-                    var revi1;
-                    restaurantID1 = selectedID[k];
-                    //console.log(restaurantID1);
-
-                    function importRating1 (rid)     // import the rating info of a selected restaurant
-                    {
-                        //console.log(rid);
-                        var numRatings = rating[rid].length; // number of ratings for this restaurant
-                        revi1 = new Array(numRatings);       // import ratings
-                        revit = new Array(numRatings);       // import ratings date information
-
-                            for (var h=0; h<numRatings; h++)
-                            {
-                                revi1[h] = rating[rid][h][0];
-                                revit[h] = formatDate.parse(rating[rid][h][1]);
-
-                            }
-                    }
-
-                    importRating1 (restaurantID1);
-
-                    d3.select("body").select("#historyPlot").selectAll("circle").remove();
-                    d3.select("body").select("#historyPlot").select("#rNm").remove();
-                    d3.select("#historyPlot").append("text")
-                        .attr("id", "rNm")
-                        .attr("x", 50)
-                        .attr("y", 20)
-                        .text("Rating history of " + resName[k]);
-
-                    d3.select("#historyPlot")
-                        .selectAll("circle")
-                        .data(revi1)
-                        .enter()
-                        .append("circle")
-                        .attr("cx", function(d,i) { return xScale(revit[i]); })
-                        .attr("cy", function(d) { return yScale(d); })
-                        .attr("r", function(d,i) { if (yearFormat(revit[i]) > 2010 && yearFormat(revit[i]) < 2015) return 3; else return 0;})
-                        //.attr("fill", function(d,i) {if (i<firstN) return "red"; else return "blue";})
+                    clickOnScatter(k);
                 }
             }
         }
 
     });
+
+    function clickOnScatter(resIndex) {
+        var k = resIndex;
+        d3.select("body").select("#name").text(resName[k]);
+        d3.select("body").select("#weiRating").text(weightedR[k]);
+        d3.select("body").select("#aveRating").text(ratMean[k]);
+        d3.select("body").select("#numRating").text(numR[k]);
+        d3.select("body").select("#firRating").text(firstDate[k]);
+        d3.select("body").select("#lasRating").text(lastDate[k]);
+
+        onCircle = true
+        highlightInMap([resID[k]]);
+
+        // plot single restaurant rating through the time
+        var revi1;
+        restaurantID1 = selectedID[k];
+        //console.log(restaurantID1);
+
+        function importRating1 (rid)     // import the rating info of a selected restaurant
+        {
+            //console.log(rid);
+            var numRatings = rating[rid].length; // number of ratings for this restaurant
+            revi1 = new Array(numRatings);       // import ratings
+            revit = new Array(numRatings);       // import ratings date information
+
+            for (var h=0; h<numRatings; h++)
+            {
+                revi1[h] = rating[rid][h][0];
+                revit[h] = formatDate.parse(rating[rid][h][1]);
+
+            }
+        }
+
+        importRating1 (restaurantID1);
+
+        d3.select("body").select("#historyPlot").selectAll("circle").remove();
+        d3.select("body").select("#historyPlot").select("#rNm").remove();
+        d3.select("#historyPlot").append("text")
+        .attr("id", "rNm")
+        .attr("x", 50)
+        .attr("y", 20)
+        .text("Rating history of " + resName[k]);
+
+        d3.select("#historyPlot")
+        .selectAll("circle")
+        .data(revi1)
+        .enter()
+        .append("circle")
+        .attr("cx", function(d,i) { return xScale(revit[i]); })
+        .attr("cy", function(d) { return yScale(d); })
+        .attr("r", function(d,i) { if (yearFormat(revit[i]) > 2010 && yearFormat(revit[i]) < 2015) return 3; else return 0;})
+
+        // hide other circles when click on one
+        d3.select("#scatter").selectAll("circle").classed("hidden", function (d, j) {
+            // d is average, weightedR[j] is weighted
+            return !(k==j && ratMean[k]==d);
+        });
+    }
 
     // ----------------------------------------------------------
     // Draw the history of reviews
@@ -378,14 +388,15 @@ function mainPlot(){
 
     // Click on a marker
     function onClick(e) {
-        for(var i = 0; i < markers.length; i ++) {
-            if(markers[i]._leaflet_id == this._leaflet_id)
-                markers[i].setOpacity(1);
-            else
-                markers[i].setOpacity(0);
+        resIndex = 0;
+        for(var i = 0; i < resID.length; i ++) {
+            if(resID[i] == this._leaflet_id) {
+                resIndex = i;
+                break;
+            }
         }
-
-        plotByID([this._leaflet_id]);
+        clickOnScatter(resIndex);
+        highlightInMap([this._leaflet_id]);
     }
 
     // --------------------------------------------
@@ -408,7 +419,6 @@ d3.json("./reviews.json", function(error, json) {
     d3.json("./az100.json", function(error, json) {
         if (error) return console.warn(error);
         restaurant_data= json;
-        console.log(rating);
         mainPlot();
     });
 
