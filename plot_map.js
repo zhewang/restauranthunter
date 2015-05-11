@@ -268,8 +268,7 @@ function mainPlot(){
                         .attr("id", "rNm")
                         .attr("x", 50)
                         .attr("y", 20)
-                        .style("font-size", "16px")
-                        .text("---" + resName[k] + "---");
+                        .text("Rating history of " + resName[k]);
 
                     d3.select("#historyPlot")
                         .selectAll("circle")
@@ -278,10 +277,11 @@ function mainPlot(){
                         .append("circle")
                         .attr("cx", function(d,i) { return xScale(revit[i]); })
                         .attr("cy", function(d) { return yScale(d); })
-                        .attr("r", function(d,i) { if (yearFormat(revit[i]) > 2010 && yearFormat(revit[i]) < 2015) return 5; else return 0;})
-                        .attr("fill", function(d,i) {if (i<firstN) return "red"; else return "blue";})
-                        .attr("stroke", "white")
-                        .attr("stroke-width", 0);
+                        .attr("r", function(d,i) { if (yearFormat(revit[i]) > 2010 && yearFormat(revit[i]) < 2015) return 4; else return 0;})
+                        //.attr("fill", function(d,i) {if (i<firstN) return "red"; else return "blue";})
+                        .attr("fill", "red")
+                        .attr("stroke", "black")
+                        .attr("stroke-width", 1);
 
                 }
             }
@@ -402,13 +402,7 @@ function mainPlot(){
     }
 
     // plot all the restaurant at the begining;
-    allIDs = new Array(restaurant_data.length);
-    for (var j=0; j < restaurant_data.length; j++)
-    {
-        allIDs[j] = restaurant_data[j][0];
-    }
-
-    plotByID(allIDs);
+    plotByID(selectedID);
 };
 
 
