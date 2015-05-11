@@ -80,8 +80,9 @@ d3.json("./az100.json", function(error, json) {
     map = L.map('map').setView([lon, lat], 10);
 
     // add an OpenStreetMap tile layer
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        detectRetina: true
+    L.tileLayer('http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png', {
+        detectRetina: true,
+        styles: 'grayscale'
     }).addTo(map);
 
 
