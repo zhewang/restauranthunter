@@ -12,6 +12,8 @@ var firstDate;   // store the date of first rating of each restaurant
 var lastDate;  // store the date of last rating of each restuarant
 var weightedR;   // store the weighted ratings of selected restaurant
 //var rating;     // store the the json file after importing
+var xaxisRange = d3.scale.linear().domain([0, 5]).range([110,460]);
+var yaxisRange = d3.scale.linear().domain([0, 5]).range([370,20]);
 
 // funtiont generate date object from database entry
 var formatDate = d3.time.format("%Y-%m-%d");
@@ -60,8 +62,6 @@ function plotByID (business_id)
     maxWeight(weightedR, business_id);
 
     // draw weighted rating (x) vs avearage rating (y)
-    xaxisRange = d3.scale.linear().domain([0, 5]).range([140,490]);
-    yaxisRange = d3.scale.linear().domain([0, 5]).range([370,20]);
 
     var color01 = "#91bfdb";     //blue
     var color02 = "#ffffbf";     //white

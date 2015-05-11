@@ -105,8 +105,6 @@ function mainPlot(){
     }).addTo(map);
 
     // draw the scatter plot (weighted rating vs average rating) axises
-    xaxisRange = d3.scale.linear().domain([0, 5]).range([140,490]);
-    yaxisRange = d3.scale.linear().domain([0, 5]).range([370,20]);
     var xAxis = d3.svg.axis().ticks(5).scale(xaxisRange);
     var yAxis = d3.svg.axis().ticks(5).scale(yaxisRange);
 
@@ -197,9 +195,9 @@ function mainPlot(){
 
     // the equal line in the scatter plot
     d3.select("#scatter").append("line")
-        .attr("x1", 140)
+        .attr("x1", 110)
         .attr("y1", 370)
-        .attr("x2", 490)
+        .attr("x2", 460)
         .attr("y2", 20)
         .attr("stroke", "blue")
         .attr("stroke-width", 1);
@@ -207,7 +205,7 @@ function mainPlot(){
     // axis of the scatter plot
     yAxis.orient("left");
     d3.select("#scatter").append("g").attr("class", "axises")
-        .attr("transform", "translate(140, 0)")
+        .attr("transform", "translate(110, 0)")
         .call(yAxis); // call the axis generator
      d3.select("#scatter").append("g")
         .attr("class", "axises")
