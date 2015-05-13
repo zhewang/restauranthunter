@@ -88,7 +88,7 @@ function mainPlot(){
     // add reset button (using easyButton)
     L.easyButton("fa-rotate-left",
                  function() {
-                     map.setView([restaurant_data[0][2], restaurant_data[0][3]], 10)
+                     map.setView([restaurant_data[0][2], restaurant_data[0][3]], 11)
 
                      // resume all markers
                      for (var i = 0; i < markers.length; i++) {
@@ -279,7 +279,7 @@ function mainPlot(){
         .attr("id", "rNm")
         .attr("x", 50)
         .attr("y", 20)
-        .text("Rating history of " + resName[k]);
+        .text("Rating history");
 
         d3.select("#historyPlot")
         .selectAll("circle")

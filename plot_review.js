@@ -113,7 +113,7 @@ function maxWeight (wR, business_id)
     d3.select("body").select("#historyPlot").select("#rNm").remove();
     d3.select("#historyPlot").append("text")
         .attr("id", "rNm").attr("x", 50).attr("y", 20)
-        .text("Rating history of " + resName[maxIndex]);
+        .text("Rating history");
 
     // import the data of the restaurant with hightest weighted score
     var numRatings = rating[maxResID].length; // number of ratings for this restaurant
