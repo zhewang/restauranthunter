@@ -88,6 +88,8 @@ function mainPlot(){
     // add reset button (using easyButton)
     L.easyButton("fa-rotate-left",
                  function() {
+                     map.setView([restaurant_data[0][2], restaurant_data[0][3]], 10)
+
                      // resume all markers
                      for (var i = 0; i < markers.length; i++) {
                          markers[i].setOpacity(1);
@@ -99,8 +101,6 @@ function mainPlot(){
                          SelectedMarkerZIndex.push(markers[i]._zIndex);
                      }
                      plotByID(selectedID);
-                     map.setView([restaurant_data[0][2], restaurant_data[0][3]
-], 10)
                   },
                   "Reset",
                   map);
